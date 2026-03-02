@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>元宵·随机一言</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fef3e7 0%, #ffe6d5 100%);
+            font-family: "Microsoft YaHei", "苹方", "PingFang SC", "Hiragino Sans GB", sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .card {
+            max-width: 85%;
+            background: rgba(255, 248, 240, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 48px 48px 32px 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(255, 140, 0, 0.2);
+            padding: 2.5rem 1.8rem;
+            border: 2px solid #fff9f0;
+            margin: 20px;
+        }
+        .lantern {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 8px 6px #ffb282);
+        }
+        .quote {
+            font-size: 1.8rem;
+            line-height: 1.4;
+            font-weight: 500;
+            color: #3b2a1c;
+            margin: 0.8rem 0;
+            word-break: break-word;
+            text-shadow: 1px 1px 0 #fff6e5;
+        }
+        .footer {
+            margin-top: 2rem;
+            font-size: 1rem;
+            color: #b07d5e;
+            border-top: 2px dashed #ffcd94;
+            padding-top: 1.2rem;
+            letter-spacing: 1px;
+        }
+        .footer span {
+            background: #ffdbb5;
+            padding: 0.3rem 0.8rem;
+            border-radius: 60px;
+            display: inline-block;
+        }
+        .reload-hint {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #cc9f7c;
+        }
+        .reload-hint svg {
+            width: 1rem;
+            height: 1rem;
+            fill: #cc9f7c;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="lantern">🏮</div>
+        <div class="quote" id="quoteText">加载中...</div>
+        <div class="footer"><span>元宵 · 软件工程 · 启程</span></div>
+        <div class="reload-hint">
+            <svg viewBox="0 0 24 24" width="16" height="16">
+                <path d="M17.65 6.35A8 8 0 1 0 19 12h-2a6 6 0 1 1-2.23-4.69l2.64-2.64 1.42 1.42-3.54 3.54-3.54-3.54 1.41-1.41L16.44 5.3c.38.32.74.68 1.06 1.06z"/>
+            </svg>
+            刷新页面 · 换一句
+        </div>
+    </div>
+    <script>
+        // ----- 30句名言库 -----
+        const quotes = [
+            // 励志
+            "乾坤未定，你我皆是黑马。",
+            "半山腰太挤，我们要去山顶看看。",
+            "星光不问赶路人，时光不负有心人。",
+            "所谓无底深渊，下去，也是前程万里。——木心",
+            "每一个不曾起舞的日子，都是对生命的辜负。——尼采",
+            "种一棵树最好的时间是十年前，其次是现在。",
+            "且视他人之疑目如盏盏鬼火，大胆去走你的夜路。——史铁生",
+            "生活原本沉闷，但跑起来就有风。",
+            // 治愈
+            "日落尤其温柔，人间皆是浪漫。",
+            "慢慢来，会好的，你又不差。",
+            "万物皆有裂痕，那是光照进来的地方。——莱昂纳德·科恩",
+            "今天的不开心就到此为止，明天依然光芒万丈。",
+            "请保持热爱，奔赴下一场山海。",
+            "如果你在黑暗中感到不适，请自己成为发光体。",
+            "慢慢理解世界，慢慢更新自己。",
+            "你风尘仆仆走向我，胜过所有遥远的温柔。",
+            // 古风
+            "醉后不知天在水，满船清梦压星河。——唐·唐温如",
+            "山中何事？松花酿酒，春水煎茶。——元·张可久",
+            "晓看天色暮看云，行也思君，坐也思君。——唐寅",
+            "桃李春风一杯酒，江湖夜雨十年灯。——黄庭坚",
+            "此心安处是吾乡。——苏轼",
+            "吹灭读书灯，一身都是月。——孙玉石",
+            "梦里不知身是客，一晌贪欢。——李煜",
+            // 搞笑
+            "我的代码里唯一的bug就是，写了太多bug。",
+            "为什么我吃不胖？因为我的身体在运行“防胖”程序。",
+            "程序员的第一条定律：代码能跑就别动。",
+            "元宵节吃汤圆，就像写代码要加注释——不然容易卡住。",
+            "我的生活就像死循环，日复一日，但就是break不掉。",
+            "别人是才高八斗，我是才高八斗——只是斗里装的是饭。",
+            "元宵节许愿：愿bug像汤圆一样，一煮就浮上来，一捞就没。"
+        ];
+
+        // 随机选取一句
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        document.getElementById('quoteText').innerText = quotes[randomIndex];
+    </script>
+</body>
+</html>
